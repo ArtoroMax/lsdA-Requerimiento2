@@ -1,0 +1,13 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\Requerimiento02",
+    "\\Requerimiento02\\cliente",
+    "\\Requerimiento02\\s_gestion_usuarios",
+    "\\Requerimiento02\\s_gestion_usuarios\\sop_rmi",
+    "\\Requerimiento02\\s_gestion_usuarios\\utilidades",
+    "\\Requerimiento02\\s_seguimiento_usuarios"
+  ],
+  "SelectedNode": "\\Requerimiento02\\s_gestion_usuarios\\utilidades\\UtilidadesRegistroS.java",
+  "PreviewInSolutionExplorer": false
+}

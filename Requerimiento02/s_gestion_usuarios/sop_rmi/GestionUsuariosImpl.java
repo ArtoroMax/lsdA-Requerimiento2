@@ -1,6 +1,5 @@
 package s_gestion_usuarios.sop_rmi;
 
-import cliente.sop_rmi.AdminCllbckImpl;
 import cliente.sop_rmi.AdminCllbckInt;
 //import cliente.utilidades.UtilidadesRegistroC;
 import java.rmi.RemoteException;
@@ -10,49 +9,38 @@ import java.util.Vector;
 import s_gestion_usuarios.dto.CredencialDTO;
 import s_gestion_usuarios.dto.PersonalDTO;
 
-
 public class GestionUsuariosImpl extends UnicastRemoteObject implements GestionUsuariosInt {
 
     private ArrayList<PersonalDTO> personal;
     private Vector<AdminCllbckInt> callbacks;
-    private String contrasenaAdm = "clave";
-    private String usuarioAdm = "clave";
-    private int id = 12345678;
-    private int contador = 0;
 
     public GestionUsuariosImpl() throws RemoteException {
         super();
         personal = new ArrayList<PersonalDTO>();
         callbacks = new Vector<>();
+
+        registrarPersonal(new PersonalDTO("CC", 1007226136, "Edwin Garces", "Administrador", "admin", "admin"));
     }
 
     @Override
-    public int abrirSesion(CredencialDTO objCredencial) throws RemoteException {
-        if (objCredencial.getUsuario() == null ? usuarioAdm == null : objCredencial.getUsuario().equals(usuarioAdm))  {
-            System.out.println("C.O:Instanciando objeto callback");
-            AdminCllbckImpl objcllbck = new AdminCllbckImpl();
-            System.out.println("C.O:Registrando objeto callback");
-            registrarCallback(objcllbck);
-            return 1;
-        } else {
-            PersonalDTO Usuario = null;
-            if (Usuario != null && (Usuario.getClave() == null ? objCredencial.getClave() == null : Usuario.getClave().equals(objCredencial.getClave())) && (Usuario.getUsuario() == null ? objCredencial.getUsuario() == null : Usuario.getUsuario().equals(objCredencial.getUsuario()))) {
-                if ("Secretaria".equals(Usuario.getOcupacion())) {
-                    System.out.println("C.O:Instanciando objeto callback");
-                    AdminCllbckImpl objcllbck = new AdminCllbckImpl();
-                    System.out.println("C.O:Registrando objeto callback");
-                    registrarCallback(objcllbck);
-                    return 2;
-                } else if ("Profesioinal".equals(Usuario.getOcupacion())) {
-                    System.out.println("C.O:Instanciando objeto callback");
-                    AdminCllbckImpl objcllbck = new AdminCllbckImpl();
-                    System.out.println("C.O:Registrando objeto callback");
-                    registrarCallback(objcllbck);
-                    return 3;
-                }
+    public PersonalDTO abrirSesion(CredencialDTO objCredencial) throws RemoteException {
+        System.out.println("Iniciar Sesión ---- ENTRANDO");
+
+        for (int i = 0; i < personal.size(); i++) {
+            PersonalDTO personalBusqueda = personal.get(i);
+
+            String usuarioBusqueda = personalBusqueda.getUsuario();
+            String claveBusqueda = personalBusqueda.getClave();
+
+            if (usuarioBusqueda.equals(objCredencial.getUsuario()) && claveBusqueda.equals(objCredencial.getClave())) {
+                System.out.println("Iniciar Sesión ---- SALIENDO");
+                return personalBusqueda;
             }
         }
-        return 0;
+
+        System.out.println("Iniciar Sesión ---- SALIENDO");
+        return null;
+
     }
 
     public int buscarPersonal(int id) {
@@ -68,7 +56,9 @@ public class GestionUsuariosImpl extends UnicastRemoteObject implements GestionU
     public void consultarReferenciaRemota(String direccionIpRMIRegistry, int numPuertoRMIRegistry) {
         System.out.println(" ");
         System.out.println("Desde consultarReferenciaRemota()...");
-        //this.objReferenciaRemota = (GestionNotificacionesInt) UtilidadesRegistroC.obtenerObjRemoto(direccionIpRMIRegistry, numPuertoRMIRegistry, "ObjetoRemotoNotificacion");
+        // this.objReferenciaRemota = (GestionNotificacionesInt)
+        // UtilidadesRegistroC.obtenerObjRemoto(direccionIpRMIRegistry,
+        // numPuertoRMIRegistry, "ObjetoRemotoNotificacion");
     }
 
     @Override
@@ -102,14 +92,14 @@ public class GestionUsuariosImpl extends UnicastRemoteObject implements GestionU
         if (!(callbacks.contains(objAdmin))) {
             callbacks.addElement(objAdmin);
             System.out.println("Nuevo  Objeto adicionado");
-            //hacerCallbck();
+            // hacerCallbck();
         }
     }
 
     public void hacerCallbck(CredencialDTO objCredencial) throws RemoteException {
         for (int i = 0; i < callbacks.size(); i++) {
             AdminCllbckInt obj = (AdminCllbckInt) callbacks.elementAt(i);
-            obj.informarIngreso(objCredencial.getUsuario(),objCredencial.getClave());
+            obj.informarIngreso(objCredencial.getUsuario(), objCredencial.getClave());
         }
     }
 }

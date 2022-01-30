@@ -2,7 +2,6 @@ package s_gestion_usuarios;
 
 import java.rmi.RemoteException;
 import s_gestion_usuarios.sop_rmi.GestionUsuariosImpl;
-import s_gestion_usuarios.utilidades.UtilidadesConsola;
 import s_gestion_usuarios.utilidades.UtilidadesRegistroS;
 
 public class ServidorDeObjetos01 {
@@ -13,9 +12,9 @@ public class ServidorDeObjetos01 {
         String direccionIpRMIRegistry = "localhost";
         
                
-        //System.out.println("Cual es el la dirección ip donde se encuentra  el rmiregistry ");
+        //System.out.println("Cual es el la direcciï¿½n ip donde se encuentra  el rmiregistry ");
         //direccionIpRMIRegistry = UtilidadesConsola.leerCadena();
-        //System.out.println("Cual es el número de puerto por el cual escucha el rmiregistry ");
+        //System.out.println("Cual es el nï¿½mero de puerto por el cual escucha el rmiregistry ");
         //numPuertoRMIRegistry = UtilidadesConsola.leerEntero(); 
      
         GestionUsuariosImpl objRemoto = new GestionUsuariosImpl();

@@ -1,5 +1,6 @@
 package s_gestion_usuarios.dto;
 
+import java.sql.Date;
 import java.util.ArrayList;
 
 
@@ -7,6 +8,12 @@ public class UsuarioDTO {
 	private String tipo_id;
 	private int id;
 	private String nombreCompleto;
+	private String facultad;
+	private String patologia;
+	private Date fechaIngreso;
+
+	private Valoracion
+
 	private String usuario;
 	private String clave;
         private int faltas;

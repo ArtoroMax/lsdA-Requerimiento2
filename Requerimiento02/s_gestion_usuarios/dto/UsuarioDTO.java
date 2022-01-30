@@ -1,7 +1,6 @@
 package s_gestion_usuarios.dto;
 
 import java.sql.Date;
-import java.util.ArrayList;
 
 
 public class UsuarioDTO {
@@ -11,22 +10,19 @@ public class UsuarioDTO {
 	private String facultad;
 	private String patologia;
 	private Date fechaIngreso;
-
-	private Valoracion
-
 	private String usuario;
 	private String clave;
-        private int faltas;
-        private ArrayList<String> observaciones;
 
-	public UsuarioDTO(String tipo_id, int id, String nombreCompleto, String usuario, String clave, int faltas, ArrayList<String> observaciones){
+
+	public UsuarioDTO(String tipo_id, int id, String nombreCompleto, String facultad, String patologia, Date fechaIngreso, String usuario, String clave){
 		this.tipo_id = tipo_id;
 		this.id = id;
 		this.nombreCompleto = nombreCompleto;
+		this.facultad = facultad;
+		this.patologia = patologia;
+		this.fechaIngreso = fechaIngreso;
 		this.usuario = usuario;
 		this.clave = clave;
-                this.faltas = faltas;
-                this.observaciones = observaciones;
 	}
 	
 	public String getTipo_id() {
@@ -53,10 +49,33 @@ public class UsuarioDTO {
         	this.nombreCompleto = nombreCompleto;
     	}
 
+		public String getFacultad() {
+        	return facultad;
+    	}
+
+    	public void setFacultad(String facultad) {
+        	this.facultad = facultad;
+    	}
+
+		public String getPatologia() {
+        	return patologia;
+    	}
+
+    	public void setPatologia(String patologia) {
+        	this.patologia = patologia;
+    	}
 
     	public String getUsuario() {
         	return usuario;
     	}
+
+		public Date getFechaIngreso() {
+			return fechaIngreso;
+		}
+	
+		public void setFechaIngreso(Date fechaIngreso) {
+			this.fechaIngreso = fechaIngreso;
+		}
 
     	public void setUsuario(String usuario) {
         	this.usuario = usuario;
@@ -69,22 +88,6 @@ public class UsuarioDTO {
    	public void setClave(String clave) {
         	this.clave = clave;
     	}
-
-    public int getFaltas() {
-        return faltas;
-    }
-
-    public void setFaltas(int faltas) {
-        this.faltas = faltas;
-    }
-
-    public ArrayList<String> getObservaciones() {
-        return observaciones;
-    }
-
-    public void setObservaciones(ArrayList<String> observaciones) {
-        this.observaciones = observaciones;
-    }
         
         
 }

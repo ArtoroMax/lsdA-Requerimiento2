@@ -1,17 +1,18 @@
 package s_gestion_usuarios.sop_rmi;
 
 import cliente.sop_rmi.AdminCllbckInt;
-//import cliente.utilidades.UtilidadesRegistroC;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Vector;
 import s_gestion_usuarios.dto.CredencialDTO;
 import s_gestion_usuarios.dto.PersonalDTO;
+import s_gestion_usuarios.dto.UsuarioDTO;
 
 public class GestionUsuariosImpl extends UnicastRemoteObject implements GestionUsuariosInt {
 
     private ArrayList<PersonalDTO> personal;
+    private ArrayList<UsuarioDTO> usuarios;
     private Vector<AdminCllbckInt> callbacks;
 
     public GestionUsuariosImpl() throws RemoteException {
@@ -62,13 +63,13 @@ public class GestionUsuariosImpl extends UnicastRemoteObject implements GestionU
     }
 
     @Override
-    public boolean registrarPersonal(PersonalDTO objUsuario) throws RemoteException {
-        System.out.println("Entrando a registrar usuario");
+    public boolean registrarPersonal(PersonalDTO objPersonal) throws RemoteException {
+        System.out.println("Registrar Personañ ---- ENTRANDO");
         boolean bandera = false;
 
-        if (personal.size() < 2) {
-            bandera = personal.add(objUsuario);
-            System.out.println("Usuario registrado exitosamente");
+        if (personal.size() < 10) {
+            bandera = personal.add(objPersonal);
+            System.out.println("Personal registrado exitosamente");
         }
 
         return bandera;
@@ -77,8 +78,8 @@ public class GestionUsuariosImpl extends UnicastRemoteObject implements GestionU
     @Override
     public PersonalDTO consultarPersonal(int id) throws RemoteException {
         PersonalDTO resultado = null;
-        System.out.println("*** Desde consultarUsuario()...");
-        System.out.println("*** Consultar usuario id: " + id);
+        System.out.println("*** Desde consultarPersonal()...");
+        System.out.println("*** Consultar Personal con id: " + id);
         int bandera = buscarPersonal(id);
         if (bandera != -1) {
             resultado = personal.get(bandera);
@@ -101,5 +102,30 @@ public class GestionUsuariosImpl extends UnicastRemoteObject implements GestionU
             AdminCllbckInt obj = (AdminCllbckInt) callbacks.elementAt(i);
             obj.informarIngreso(objCredencial.getUsuario(), objCredencial.getClave());
         }
+    }
+
+    @Override
+    public boolean registrarUsuario(UsuarioDTO objUsuario) throws RemoteException {
+        System.out.println("Registrar Usuario ---- ENTRANDO");
+        boolean bandera = false;
+
+        if (personal.size() < 10) {
+            bandera = usuarios.add(objUsuario);
+            System.out.println("Usuario registrado exitosamente");
+            System.out.println("Registra usuario ---- SALIENDo");
+        }
+        return bandera;
+    }
+
+    @Override
+    public UsuarioDTO consultarUsuario(int id) throws RemoteException {
+        UsuarioDTO resultado = null;
+        System.out.println("*** Desde consultarUsuario()...");
+        System.out.println("*** Consultar usuario con id: " + id);
+        int bandera = buscarPersonal(id);
+        if (bandera != -1) {
+            resultado = usuarios.get(bandera);
+        }
+        return resultado;
     }
 }

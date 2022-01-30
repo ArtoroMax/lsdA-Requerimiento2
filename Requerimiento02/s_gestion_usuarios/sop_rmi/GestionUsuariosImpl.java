@@ -2,6 +2,7 @@ package s_gestion_usuarios.sop_rmi;
 
 import cliente.sop_rmi.AdminCllbckImpl;
 import cliente.sop_rmi.AdminCllbckInt;
+//import cliente.utilidades.UtilidadesRegistroC;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;

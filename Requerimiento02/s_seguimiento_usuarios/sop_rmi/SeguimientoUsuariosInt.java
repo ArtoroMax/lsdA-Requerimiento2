@@ -11,7 +11,7 @@ import s_seguimiento_usuarios.dto.PlanEntrenamientoDTO;
 public interface SeguimientoUsuariosInt extends Remote{
   public boolean registrarValoracion(ValoracionDTO valoracion, int id) throws RemoteException;
   public ValoracionDTO consultarValoracion(int identificacion) throws RemoteException;
-  public AsistenciaDTO registrarAsistencia(AsistenciaDTO asistencia, int id, int plan) throws RemoteException;
+  public String registrarAsistencia(String asistencia, int id, int plan, int programa) throws RemoteException;
   public AsistenciaDTO consultarAsistencia(String identificacion) throws RemoteException;
   public PlanEntrenamientoDTO registrarEntrenamiento(PlanEntrenamientoDTO planEntrenamiento, int id) throws RemoteException;
   public PlanEntrenamientoDTO consultarEntrenamiento(String identificacion) throws RemoteException;

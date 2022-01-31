@@ -58,7 +58,6 @@ public class ClienteDeObjetos {
 
                     if (Usuario.getOcupacion().equals("Administrador")) {
                         MenuAdmin();
-                        System.out.println("gatos");
                     } else if (Usuario.getOcupacion().equals("Secretaria")) {
                         MenuSecretaria();
                     } else if (Usuario.getOcupacion().equals("Profesional")) {
@@ -387,7 +386,7 @@ public class ClienteDeObjetos {
 
     private static void OpcionAdm2() {
         try {
-            System.out.println("==Buscar Usuario==");
+            System.out.println("==Buscar Personal==");
             System.out.println("Ingrese identificacion a buscar");
             int id = UtilidadesConsola.leerEntero();
             PersonalDTO Usuario = extracted();

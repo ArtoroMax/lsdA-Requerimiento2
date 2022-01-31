@@ -86,10 +86,10 @@ public class GestionUsuariosImpl extends UnicastRemoteObject implements GestionU
 
     @Override
     public boolean registrarPersonal(PersonalDTO objPersonal) throws RemoteException {
-        System.out.println("Registrar Personañ ---- ENTRANDO");
+        System.out.println("Registrar Personal ---- ENTRANDO");
         boolean bandera = false;
         personal = deserializar();
-        if (personal.size() < 10) {
+        if (personal.size() < 100) {
             bandera = personal.add(objPersonal);
             serializar(personal);
             System.out.println("Personal registrado exitosamente");

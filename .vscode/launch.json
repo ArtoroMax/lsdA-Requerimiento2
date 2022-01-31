@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch ServidorDeSeguimientoObjetos02",
+            "request": "launch",
+            "mainClass": "s_seguimiento_usuarios.ServidorDeSeguimientoObjetos02",
+            "projectName": "lsdA-Requerimiento2_12794520"
+        },
+        {
+            "type": "java",
             "name": "Launch Current File",
             "request": "launch",
             "mainClass": "${file}"

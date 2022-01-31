@@ -1,6 +1,7 @@
 package s_gestion_usuarios.dto;
 
 import java.sql.Date;
+import java.util.ArrayList;
 
 import s_seguimiento_usuarios.dto.PlanEntrenamientoDTO;
 import s_seguimiento_usuarios.dto.ValoracionDTO;
@@ -15,7 +16,7 @@ public class UsuarioDTO {
 	private String usuario;
 	private String clave;
 	private ValoracionDTO valoracion;
-	private PlanEntrenamientoDTO planEntrenamiento;
+	private ArrayList<PlanEntrenamientoDTO> planEntrenamiento;
 
 	public UsuarioDTO(String tipo_id, int id, String nombreCompleto, String facultad, String patologia,
 			Date fechaIngreso, String usuario, String clave) {
@@ -101,11 +102,11 @@ public class UsuarioDTO {
 		this.valoracion = valoracion;
 	}
 
-	public PlanEntrenamientoDTO getPlanEntrenamientoDTO() {
+	public ArrayList<PlanEntrenamientoDTO> getPlanEntrenamientoDTO() {
 		return planEntrenamiento;
 	}
 
-	public void setPlanEntrenamientoDTO(PlanEntrenamientoDTO planEntrenamiento) {
+	public void setPlanEntrenamientoDTO(ArrayList<PlanEntrenamientoDTO> planEntrenamiento) {
 		this.planEntrenamiento = planEntrenamiento;
 	}
 

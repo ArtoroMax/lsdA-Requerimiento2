@@ -4,7 +4,6 @@ import java.sql.Date;
 import java.util.ArrayList;
 
 import s_seguimiento_usuarios.dto.PlanEntrenamientoDTO;
-import s_seguimiento_usuarios.dto.ValoracionDTO;
 
 public class UsuarioDTO {
 	private String tipo_id;
@@ -12,25 +11,30 @@ public class UsuarioDTO {
 	private String nombreCompleto;
 	private String facultad;
 	private String patologia;
-	private Date fechaIngreso;
+	private String fechaIngreso;
+	private String tipoUsuario;
 	private String usuario;
 	private String clave;
 	private ValoracionDTO valoracion;
 	private ArrayList<PlanEntrenamientoDTO> planEntrenamiento;
 
 	public UsuarioDTO(String tipo_id, int id, String nombreCompleto, String facultad, String patologia,
-			Date fechaIngreso, String usuario, String clave) {
+			String fechaIngreso2, String tipoUsuario, String usuario, String clave) {
 		this.tipo_id = tipo_id;
 		this.id = id;
 		this.nombreCompleto = nombreCompleto;
 		this.facultad = facultad;
 		this.patologia = patologia;
-		this.fechaIngreso = fechaIngreso;
+		this.fechaIngreso = fechaIngreso2;
+		this.tipoUsuario = tipoUsuario;
 		this.usuario = usuario;
 		this.clave = clave;
 	}
 
-	public String getTipo_id() {
+	public UsuarioDTO() {
+    }
+
+    public String getTipo_id() {
 		return tipo_id;
 	}
 
@@ -70,15 +74,23 @@ public class UsuarioDTO {
 		this.patologia = patologia;
 	}
 
+	public String getTipoUsuario() {
+		return tipoUsuario;
+	}
+
+	public void setTipoUsuario(String tipoUsuario) {
+		this.tipoUsuario = tipoUsuario;
+	}
+
 	public String getUsuario() {
 		return usuario;
 	}
 
-	public Date getFechaIngreso() {
+	public String getFechaIngreso() {
 		return fechaIngreso;
 	}
 
-	public void setFechaIngreso(Date fechaIngreso) {
+	public void setFechaIngreso(String fechaIngreso) {
 		this.fechaIngreso = fechaIngreso;
 	}
 

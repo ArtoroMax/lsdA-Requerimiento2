@@ -14,6 +14,7 @@ import java.util.Vector;
 import s_gestion_usuarios.dto.CredencialDTO;
 import s_gestion_usuarios.dto.PersonalDTO;
 import s_gestion_usuarios.dto.UsuarioDTO;
+import s_gestion_usuarios.dto.ValoracionDTO;
 import s_gestion_usuarios.utilidades.UtilidadesRegistroC;
 import s_seguimiento_usuarios.sop_rmi.SeguimientoUsuariosInt;
 
@@ -58,6 +59,16 @@ public class GestionUsuariosImpl extends UnicastRemoteObject implements GestionU
         int aux = 0;
         for (int i = 0; i < personal.size(); i++) {
             if (id == personal.get(i).getId()) {
+                aux = i;
+            }
+        }
+        return aux;
+    }
+
+    public int buscarUsuario(int id) {
+        int aux = 0;
+        for (int i = 0; i < usuarios.size(); i++) {
+            if (id == usuarios.get(i).getId()) {
                 aux = i;
             }
         }
@@ -188,5 +199,12 @@ public class GestionUsuariosImpl extends UnicastRemoteObject implements GestionU
         }
         // Devuelvo la biblioteca
         return biblioteca;
+    }
+
+    @Override
+    public boolean registrarValoracion(ValoracionDTO objValoracion, int id) throws RemoteException {
+        UsuarioDTO usuario = consultarUsuario(id);
+        usuario.setValoracionDTO(objValoracion);
+        return false;
     }
 }

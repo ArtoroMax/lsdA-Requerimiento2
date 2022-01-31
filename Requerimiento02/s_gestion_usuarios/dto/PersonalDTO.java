@@ -20,7 +20,10 @@ public class PersonalDTO implements Serializable
 		this.clave = clave;
 	}
 	
-	public String getTipo_id() {
+	public PersonalDTO() {
+    }
+
+    public String getTipo_id() {
         	return tipo_id;
     	}
 

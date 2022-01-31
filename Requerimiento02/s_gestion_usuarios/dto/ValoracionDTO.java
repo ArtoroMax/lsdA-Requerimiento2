@@ -1,10 +1,10 @@
-package s_seguimiento_usuarios.dto;
+package s_gestion_usuarios.dto;
 
 import java.io.Serializable;
 import java.sql.Date;
 
 public class ValoracionDTO implements Serializable{
-    private Date fechaValoracion;
+    private String fechaValoracion;
     private double frecCardiacaRep;
     private double frecCardiacaAct;
     private double estatura;
@@ -14,9 +14,9 @@ public class ValoracionDTO implements Serializable{
     private double cintura;
     private String estado;
 
-    public ValoracionDTO(Date fechaValoracion, double frecCardiacaRep, double frecCardiacaAct, double estatura,
+    public ValoracionDTO(String fechaValoracion2, double frecCardiacaRep, double frecCardiacaAct, double estatura,
     double brazo, double pierna, double pecho, double cintura, String estado){
-        this.fechaValoracion = fechaValoracion;
+        this.fechaValoracion = fechaValoracion2;
         this.frecCardiacaRep = frecCardiacaRep;
         this.frecCardiacaAct = frecCardiacaAct;
         this.estatura = estatura;
@@ -27,11 +27,11 @@ public class ValoracionDTO implements Serializable{
         this.estado = estado;
     }
 
-    public Date getFechaValoracion() {
+    public String getFechaValoracion() {
         return fechaValoracion;
     }
 
-    public void setFechaValoracion(Date fechaValoracion) {
+    public void setFechaValoracion(String fechaValoracion) {
         this.fechaValoracion = fechaValoracion;
     }
 

@@ -68,13 +68,50 @@ public class ClienteDeObjetos {
                     }
                     break;
                 case 2:
+                    System.out.println("Consultar Plan");
+                    consultarPlan();
+                    break;
+                case 3:
                     System.out.println("Salir...");
                     break;
                 default:
                     System.out.println("Opción incorrecta");
             }
 
-        } while (opcion != 2);
+        } while (opcion != 3);
+    }
+
+    private static void consultarPlan() {
+        try {
+            System.out.println("Ingrese identificacion de usuario: ");
+            int id = UtilidadesConsola.leerEntero();
+            UsuarioDTO usuario = new UsuarioDTO();
+            usuario = objRemoto.consultarUsuario(id);
+            if (Usuario != null) {
+                System.out.println("==Plan del cliente==");
+                for(int i=0; i<usuario.planEntrenamiento.length(); i++){
+                    System.out.println("Fecha inicio: " + usuario.planEntrenamiento.get(i).getFechaInicio);
+                    for(int j=0; j<usuario.planEntrenamiento.get(i).Programa.length();j++){
+                        System.out.println("Dia: " + usuario.planEntrenamiento.get(i).Programa.get(j).getDia());
+                        for(int k=0; k<usuario.planEntrenamiento.get(i).Programa.get(k).ejercicio.length(); k++){
+                            System.out.println("==Ejercicio "+k+"==");
+                            System.out.println("Nombre ejercicio: "+ usuario.planEntrenamiento.get(i).Programa.get(k).ejercicio.get(k).getNombreEjercicio());
+                            System.out.println("Repeticiones: "+ usuario.planEntrenamiento.get(i).Programa.get(k).ejercicio.get(k).getRepericiones());
+                            System.out.println("Peso: "+ usuario.planEntrenamiento.get(i).Programa.get(k).ejercicio.get(k).getPeso());
+                        }
+                        System.out.println("Faltas: " + usuario.planEntrenamiento.get(i).Programa.get(j).getFaltas());
+                        for(int k=0; k<usuario.planEntrenamiento.get(i).Programa.get(k).observaciones.length();k++){
+                            System.out.println("==Observacion "+k+"==");
+                            System.out.println(usuario.planEntrenamiento.get(i).Programa.get(k).observaciones.get(k));
+                        }
+                    }
+                }
+            } else
+                System.out.println("El plan de usuario con id: " + id + " no fue encontrado");
+        } catch (Exception e) {
+            System.out.println("La operacion no se pudo completar, intente nuevamente...");
+        }
+
     }
 
     private static void MenuAdmin() {
@@ -145,11 +182,9 @@ public class ClienteDeObjetos {
 
             switch (opcion) {
                 case 1:
-                    // System.out.println("Aún no implementado");
                     OpcionPro1();
                     break;
                 case 2:
-                    // System.out.println("Aún no implementado");
                     OpcionPro2();
                     break;
                 case 3:
@@ -493,12 +528,12 @@ public class ClienteDeObjetos {
         String fechaAsistencia = UtilidadesConsola.leerCadena();
         System.out.println("Ingrese las observaciones:");
         String observaciones = UtilidadesConsola.leerCadena();
-        AsistenciaDTO objAsistencia = new AsistenciaDTO(id,fechaAsistencia, observaciones);
+        AsistenciaDTO objAsistencia = new AsistenciaDTO(id, fechaAsistencia, observaciones);
         boolean valor = objRemoto.registrarAsistencia(objAsistencia);
-            if (valor) {
-                System.out.println("**Asistencia Registrada Exitosamente**");
-            } else {
-                System.out.println("**Asistencia no registrada**");
-            }
+        if (valor) {
+            System.out.println("**Asistencia Registrada Exitosamente**");
+        } else {
+            System.out.println("**Asistencia no registrada**");
+        }
     }
 }

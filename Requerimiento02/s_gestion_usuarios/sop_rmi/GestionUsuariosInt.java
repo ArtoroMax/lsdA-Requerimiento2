@@ -8,7 +8,7 @@ import s_gestion_usuarios.dto.UsuarioDTO;
 import s_gestion_usuarios.dto.ValoracionDTO;
 import s_gestion_usuarios.dto.CredencialDTO;
 import cliente.sop_rmi.AdminCllbckInt;
-//Hereda de la clase Remote, lo cual la convierte en interfaz remota
+
 
 public interface GestionUsuariosInt extends Remote {
 
@@ -23,8 +23,6 @@ public interface GestionUsuariosInt extends Remote {
     public PersonalDTO abrirSesion(CredencialDTO objCredencial) throws RemoteException;
 
     public boolean registrarUsuario(UsuarioDTO objUsuario) throws RemoteException;
-
-    public boolean registrarValoracion(ValoracionDTO objValoracion, int id) throws RemoteException;
 
     public UsuarioDTO consultarUsuario(int id) throws RemoteException;
 

@@ -14,7 +14,6 @@ import java.util.Vector;
 import s_gestion_usuarios.dto.CredencialDTO;
 import s_gestion_usuarios.dto.PersonalDTO;
 import s_gestion_usuarios.dto.UsuarioDTO;
-import s_gestion_usuarios.dto.ValoracionDTO;
 import s_gestion_usuarios.utilidades.UtilidadesRegistroC;
 import s_seguimiento_usuarios.sop_rmi.SeguimientoUsuariosInt;
 
@@ -78,7 +77,7 @@ public class GestionUsuariosImpl extends UnicastRemoteObject implements GestionU
     public void consultarReferenciaRemota(String direccionIpRMIRegistry, int numPuertoRMIRegistry) {
         System.out.println("Entrando a consultar referencia remota");
         System.out.println("Desde consultar referencia remota...");
-        this.objRemotoSeguimiento = (SeguimientoUsuariosInt) UtilidadesRegistroC.obtenerObjRemoto(
+        objRemotoSeguimiento = (SeguimientoUsuariosInt) UtilidadesRegistroC.obtenerObjRemoto(
                 direccionIpRMIRegistry,
                 numPuertoRMIRegistry, "ObjetoRemotoNotificaciones");
 
@@ -254,10 +253,4 @@ public class GestionUsuariosImpl extends UnicastRemoteObject implements GestionU
         return biblioteca;
     }
 
-    @Override
-    public boolean registrarValoracion(ValoracionDTO objValoracion, int id) throws RemoteException {
-        UsuarioDTO usuario = consultarUsuario(id);
-        usuario.setValoracionDTO(objValoracion);
-        return false;
-    }
 }

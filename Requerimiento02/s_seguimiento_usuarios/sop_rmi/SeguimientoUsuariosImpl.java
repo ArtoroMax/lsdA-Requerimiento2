@@ -36,7 +36,7 @@ public class SeguimientoUsuariosImpl extends UnicastRemoteObject implements Segu
     @Override
     public AsistenciaDTO registrarAsistencia(AsistenciaDTO asistencia, int id, int plan) throws RemoteException {
         UsuarioDTO usuario = objRemotoGestion.consultarUsuario(id);
-        usuario.getPlanEntrenamientoDTO().get(plan).getPrograma().
+        usuario.getPlanEntrenamientoDTO().get(plan).getPrograma()
         return null;
     }
 

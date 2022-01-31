@@ -9,6 +9,7 @@ import s_gestion_usuarios.dto.PersonalDTO;
 import s_gestion_usuarios.dto.UsuarioDTO;
 import s_gestion_usuarios.dto.ValoracionDTO;
 import s_gestion_usuarios.sop_rmi.GestionUsuariosInt;
+import s_seguimiento_usuarios.sop_rmi.SeguimientoUsuariosInt;
 
 /**
  *
@@ -17,6 +18,7 @@ import s_gestion_usuarios.sop_rmi.GestionUsuariosInt;
 public class ClienteDeObjetos {
 
     private static GestionUsuariosInt objRemoto;
+    private static SeguimientoUsuariosInt objRemotoSeguimiento;
 
     public static void main(String[] args) throws RemoteException {
         int numPuertoRMIRegistry = 1;
@@ -513,7 +515,7 @@ public class ClienteDeObjetos {
 
             ValoracionDTO objValoracion = new ValoracionDTO(fechaValoracion, frecuenciaReposo, frecuenciaActiva,
                     estatura, brazo, pierna, pecho, cintura, estado);
-            boolean valor = objRemoto.registrarValoracion(objValoracion, id);
+            boolean valor = objRemotoSeguimiento.registrarValoracion(objValoracion, id);
             if (valor) {
                 System.out.println("**Valoracion Registrada Exitosamente**");
             } else {

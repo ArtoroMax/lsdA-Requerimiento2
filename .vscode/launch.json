@@ -1,0 +1,28 @@
+{
+    // Use IntelliSense para saber los atributos posibles.
+    // Mantenga el puntero para ver las descripciones de los existentes atributos.
+    // Para más información, visite: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Launch Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "Launch ClienteDeObjetos",
+            "request": "launch",
+            "mainClass": "cliente.GUI.ClienteDeObjetos",
+            "projectName": "lsdA-Requerimiento2_12794520"
+        },
+        {
+            "type": "java",
+            "name": "Launch ServidorDeObjetos01",
+            "request": "launch",
+            "mainClass": "s_gestion_usuarios.ServidorDeObjetos01",
+            "projectName": "lsdA-Requerimiento2_12794520"
+        }
+    ]
+}

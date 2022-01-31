@@ -1,12 +1,10 @@
 package cliente.GUI;
 
 import java.rmi.RemoteException;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import cliente.utilidades.UtilidadesConsola;
 import cliente.utilidades.UtilidadesRegistroC;
+import s_gestion_usuarios.dto.CredencialDTO;
 import s_gestion_usuarios.dto.PersonalDTO;
 import s_gestion_usuarios.dto.UsuarioDTO;
 import s_gestion_usuarios.dto.ValoracionDTO;
@@ -19,25 +17,24 @@ import s_gestion_usuarios.sop_rmi.GestionUsuariosInt;
 public class ClienteDeObjetos {
 
     private static GestionUsuariosInt objRemoto;
-    public static String usuarioAdm = "clave";
-    public static String contrasenaAdm = "clave";
-    public static int IdAdm = 12;
 
-    public static void main(String[] args) {
-        int numPuertoRMIRegistry = 0;
-        String direccionIpRMIRegistry = "";
+    public static void main(String[] args) throws RemoteException {
+        int numPuertoRMIRegistry = 1;
+        String direccionIpRMIRegistry = "localhost";
 
-        System.out.println("Cual es el la dirección ip donde se encuentra  el rmiregistry ");
-        direccionIpRMIRegistry = UtilidadesConsola.leerCadena();
-        System.out.println("Cual es el número de puerto por el cual escucha el rmiregistry ");
-        numPuertoRMIRegistry = UtilidadesConsola.leerEntero();
+        // System.out.println("Cual es el la dirección ip donde se encuentra el
+        // rmiregistry ");
+        // direccionIpRMIRegistry = UtilidadesConsola.leerCadena();
+        // System.out.println("Cual es el número de puerto por el cual escucha el
+        // rmiregistry ");
+        // numPuertoRMIRegistry = UtilidadesConsola.leerEntero();
         objRemoto = (GestionUsuariosInt) UtilidadesRegistroC.obtenerObjRemoto(direccionIpRMIRegistry,
-                numPuertoRMIRegistry, "ObjetoRemotoUsuarios");
+                numPuertoRMIRegistry, "ObjetoRemotoPersonal");
         MenuPrincipal();
 
     }
 
-    private static void MenuPrincipal() {
+    private static void MenuPrincipal() throws RemoteException {
         int opcion = 0;
         do {
             System.out.println("==Menu==");
@@ -48,28 +45,24 @@ public class ClienteDeObjetos {
 
             switch (opcion) {
                 case 1:
-                    System.out.println("Ingrese la identificacion");
-                    int id = UtilidadesConsola.leerEntero();
-                    System.out.println("Ingrese usuario");
+                    System.out.println("Ingrese usuario :");
                     String usuario = UtilidadesConsola.leerCadena();
-                    System.out.println("Ingrese clave ");
+                    System.out.println("Ingrese clave :");
                     String clave = UtilidadesConsola.leerCadena();
 
-                    if (id == IdAdm && usuario == usuarioAdm && clave == contrasenaAdm) {
+                    CredencialDTO credencial = new CredencialDTO(usuario, clave);
+                    PersonalDTO Usuario;
+                    Usuario = objRemoto.abrirSesion(credencial);
+
+                    if (Usuario.getOcupacion().equals("Administrador")) {
                         MenuAdmin();
-                    } else {
-                        PersonalDTO Usuario = new PersonalDTO();
-                        try {
-                            Usuario = objRemoto.consultarPersonal(id);
-                        } catch (RemoteException ex) {
-                            Logger.getLogger(ClienteDeObjetos.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        if (Usuario != null && Usuario.getClave() == clave && Usuario.getUsuario() == usuario)
-                            if (Usuario.getOcupacion() == "Secretaria") {
-                                MenuSecretaria();
-                            } else if (Usuario.getOcupacion() == "Profesioinal") {
-                                MenuProfesional();
-                            }
+                        System.out.println("gatos");
+                    } else if (Usuario.getOcupacion().equals("Secretaria")) {
+                        MenuSecretaria();
+                    } else if (Usuario.getOcupacion().equals("Profesional")) {
+                        MenuProfesional();
+                    } else{
+                        System.out.println("Credenciales no válidas");
                     }
                     break;
                 case 2:
@@ -83,7 +76,11 @@ public class ClienteDeObjetos {
                     System.out.println("Opción incorrecta");
             }
 
-        } while (opcion != 3);
+        } while (opcion != 2);
+    }
+
+    private static PersonalDTO extracted() {
+        return new PersonalDTO();
     }
 
     private static void consultarPlan() {
@@ -94,20 +91,28 @@ public class ClienteDeObjetos {
             usuario = objRemoto.consultarUsuario(id);
             if (usuario != null) {
                 System.out.println("==Plan del cliente==");
-                for(int i=0; i<usuario.getPlanEntrenamientoDTO().size(); i++){
+                for (int i = 0; i < usuario.getPlanEntrenamientoDTO().size(); i++) {
                     System.out.println("Fecha inicio: " + usuario.getPlanEntrenamientoDTO().get(i).getFechaInicio());
-                    for(int j=0; j<usuario.getPlanEntrenamientoDTO().get(i).getPrograma().size();j++){
-                        System.out.println("Dia: " + usuario.getPlanEntrenamientoDTO().get(i).getPrograma().get(j).getDia());
-                        for(int k=0; k<usuario.getPlanEntrenamientoDTO().get(i).getPrograma().get(k).getEjercicio().size(); k++){
-                            System.out.println("==Ejercicio "+k+"==");
-                            System.out.println("Nombre ejercicio: "+ usuario.getPlanEntrenamientoDTO().get(i).getPrograma().get(k).getEjercicio().get(k).getNombreEjercicio());
-                            System.out.println("Repeticiones: "+ usuario.getPlanEntrenamientoDTO().get(i).getPrograma().get(k).getEjercicio().get(k).getRepeticiones());
-                            System.out.println("Peso: "+ usuario.getPlanEntrenamientoDTO().get(i).getPrograma().get(k).getEjercicio().get(k).getPeso());
+                    for (int j = 0; j < usuario.getPlanEntrenamientoDTO().get(i).getPrograma().size(); j++) {
+                        System.out.println(
+                                "Dia: " + usuario.getPlanEntrenamientoDTO().get(i).getPrograma().get(j).getDia());
+                        for (int k = 0; k < usuario.getPlanEntrenamientoDTO().get(i).getPrograma().get(k).getEjercicio()
+                                .size(); k++) {
+                            System.out.println("==Ejercicio " + k + "==");
+                            System.out.println("Nombre ejercicio: " + usuario.getPlanEntrenamientoDTO().get(i)
+                                    .getPrograma().get(k).getEjercicio().get(k).getNombreEjercicio());
+                            System.out.println("Repeticiones: " + usuario.getPlanEntrenamientoDTO().get(i).getPrograma()
+                                    .get(k).getEjercicio().get(k).getRepeticiones());
+                            System.out.println("Peso: " + usuario.getPlanEntrenamientoDTO().get(i).getPrograma().get(k)
+                                    .getEjercicio().get(k).getPeso());
                         }
-                        System.out.println("Faltas: " + usuario.getPlanEntrenamientoDTO().get(i).getPrograma().get(j).getFaltas());
-                        for(int k=0; k<usuario.getPlanEntrenamientoDTO().get(i).getPrograma().get(k).getObservaciones().size();k++){
-                            System.out.println("==Observacion "+k+"==");
-                            System.out.println(usuario.getPlanEntrenamientoDTO().get(i).getPrograma().get(k).getObservaciones().get(k));
+                        System.out.println(
+                                "Faltas: " + usuario.getPlanEntrenamientoDTO().get(i).getPrograma().get(j).getFaltas());
+                        for (int k = 0; k < usuario.getPlanEntrenamientoDTO().get(i).getPrograma().get(k)
+                                .getObservaciones().size(); k++) {
+                            System.out.println("==Observacion " + k + "==");
+                            System.out.println(usuario.getPlanEntrenamientoDTO().get(i).getPrograma().get(k)
+                                    .getObservaciones().get(k));
                         }
                     }
                 }
@@ -119,7 +124,7 @@ public class ClienteDeObjetos {
 
     }
 
-    private static void MenuAdmin() {
+    private static void MenuAdmin() throws RemoteException {
         int opcion = 0;
         do {
             System.out.println("==Menu==");
@@ -175,7 +180,7 @@ public class ClienteDeObjetos {
         } while (opcion != 3);
     }
 
-    private static void MenuProfesional() {
+    private static void MenuProfesional() throws RemoteException {
         int opcion = 0;
         do {
             System.out.println("==Menu==");
@@ -298,7 +303,7 @@ public class ClienteDeObjetos {
     }
 
     private static boolean validarId(int id) {
-        if (id >= 0) {
+        if (id <= 0 && id >=999999) {
             System.out.println("Identificacion no valida");
             return false;
         } else {
@@ -369,9 +374,9 @@ public class ClienteDeObjetos {
             PersonalDTO objPersonal = new PersonalDTO(tipoId, id, nombres, ocupacionn, usuario, clave);
             boolean valor = objRemoto.registrarPersonal(objPersonal);
             if (valor) {
-                System.out.println("**Usuario Registrado Exitosamente**");
+                System.out.println("**Personal Registrado Exitosamente**");
             } else {
-                System.out.println("**Usuario No Registrado, se alcanzó la cantidad máxim a de usuarios a registrar**");
+                System.out.println("**Personal No Registrado, se alcanzó la cantidad máxim a de usuarios a registrar**");
             }
         } catch (RemoteException e) {
             System.out.println("La operacion no se pudo completar, intente nuevamente...");
@@ -383,7 +388,7 @@ public class ClienteDeObjetos {
             System.out.println("==Buscar Usuario==");
             System.out.println("Ingrese identificacion a buscar");
             int id = UtilidadesConsola.leerEntero();
-            PersonalDTO Usuario = new PersonalDTO();
+            PersonalDTO Usuario = extracted();
             Usuario = objRemoto.consultarPersonal(id);
 
             if (Usuario != null) {
@@ -423,16 +428,18 @@ public class ClienteDeObjetos {
             String fechaIngreso = UtilidadesConsola.leerCadena();
             System.out.println("Ingrese las patologias del usuario: ");
             String patologias = UtilidadesConsola.leerCadena();
+            System.out.println("Ingrese el usuario con el que se va a registrar: ");
             String usuario = UtilidadesConsola.leerCadena();
             if (!validarCredencial(usuario)) {
                 OpcionSec1();
             }
-            System.out.println("Ingrese clave ");
+            System.out.println("Ingrese clave: ");
             String clave = UtilidadesConsola.leerCadena();
             if (!validarCredencial(clave)) {
                 OpcionSec1();
             }
-            UsuarioDTO objUsuario = new UsuarioDTO(tipoId, id, nombreCompleto, facultad, patologias, fechaIngreso,tipoUsuario, usuario, clave);
+            UsuarioDTO objUsuario = new UsuarioDTO(tipoId, id, nombreCompleto, facultad, patologias, fechaIngreso,
+                    tipoUsuario, usuario, clave);
             boolean valor = objRemoto.registrarUsuario(objUsuario);
             if (valor) {
                 System.out.println("**Usuario Registrado Exitosamente**");
@@ -518,12 +525,12 @@ public class ClienteDeObjetos {
         }
     }
 
-    private static void OpcionPro2() {
+    private static void OpcionPro2() throws RemoteException{
         System.out.println("==Registrar Asistencia==");
         System.out.println("Ingrese la identificacion del paciente: ");
         int id = UtilidadesConsola.leerEntero();
-        UsuarioDTO usuario = new UsuarioDTO();
-        //usuario = objRemoto.consultarUsuario(id);
+        UsuarioDTO usuario;
+        usuario = objRemoto.consultarUsuario(id);
         if (usuario == null) {
             System.out.println("Usuario con id: " + id + " no existe");
             OpcionPro1();
@@ -532,12 +539,13 @@ public class ClienteDeObjetos {
         String fechaAsistencia = UtilidadesConsola.leerCadena();
         System.out.println("Ingrese las observaciones:");
         String observaciones = UtilidadesConsola.leerCadena();
-        //AsistenciaDTO objAsistencia = new AsistenciaDTO(id, fechaAsistencia, observaciones);
-        //boolean valor = objRemoto.registrarAsistencia(objAsistencia);
-        //if (valor) {
-          //  System.out.println("**Asistencia Registrada Exitosamente**");
-        //} else {
-          //  System.out.println("**Asistencia no registrada**");
-        //}
+        // AsistenciaDTO objAsistencia = new AsistenciaDTO(id, fechaAsistencia,
+        // observaciones);
+        // boolean valor = objRemoto.registrarAsistencia(objAsistencia);
+        // if (valor) {
+        // System.out.println("**Asistencia Registrada Exitosamente**");
+        // } else {
+        // System.out.println("**Asistencia no registrada**");
+        // }
     }
 }

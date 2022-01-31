@@ -1,11 +1,11 @@
 package s_gestion_usuarios.dto;
 
-import java.sql.Date;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import s_seguimiento_usuarios.dto.PlanEntrenamientoDTO;
 
-public class UsuarioDTO {
+public class UsuarioDTO implements Serializable{
 	private String tipo_id;
 	private int id;
 	private String nombreCompleto;

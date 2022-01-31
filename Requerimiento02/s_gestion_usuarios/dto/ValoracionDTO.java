@@ -1,7 +1,7 @@
 package s_gestion_usuarios.dto;
 
 import java.io.Serializable;
-import java.sql.Date;
+
 
 public class ValoracionDTO implements Serializable{
     private String fechaValoracion;

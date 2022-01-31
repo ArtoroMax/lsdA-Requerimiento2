@@ -37,9 +37,9 @@ public class GestionUsuariosImpl extends UnicastRemoteObject implements GestionU
     @Override
     public PersonalDTO abrirSesion(CredencialDTO objCredencial) throws RemoteException {
         System.out.println("Iniciar Sesión ---- ENTRANDO");
-
+        PersonalDTO personalBusqueda = null;;
         for (int i = 0; i < personal.size(); i++) {
-            PersonalDTO personalBusqueda = personal.get(i);
+            personalBusqueda = personal.get(i);
 
             String usuarioBusqueda = personalBusqueda.getUsuario();
             String claveBusqueda = personalBusqueda.getClave();
@@ -51,7 +51,7 @@ public class GestionUsuariosImpl extends UnicastRemoteObject implements GestionU
         }
 
         System.out.println("Iniciar Sesión ---- SALIENDO");
-        return null;
+        return personalBusqueda;
 
     }
 

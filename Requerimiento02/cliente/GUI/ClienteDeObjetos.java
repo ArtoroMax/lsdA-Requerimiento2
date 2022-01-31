@@ -64,7 +64,7 @@ public class ClienteDeObjetos {
                         if (Usuario != null && Usuario.getClave() == clave && Usuario.getUsuario() == usuario)
                             if (Usuario.getOcupacion() == "Secretaria") {
                                 MenuSecretaria();
-                            } else if (Usuario.getOcupacion() == "Profesioinal") {
+                            } else if (Usuario.getOcupacion() == "Profesional") {
                                 MenuProfesional();
                             }
                     }
@@ -282,7 +282,7 @@ public class ClienteDeObjetos {
     private static String tipoUsuario() {
         System.out.println("Seleccione tipo de usuario: ");
         System.out.println("1. Secretaria ");
-        System.out.println("2. Entrenador");
+        System.out.println("2. Profesional");
         int tipoUsuario = UtilidadesConsola.leerEntero();
         String tipoU = null;
         switch (tipoUsuario) {
@@ -290,7 +290,7 @@ public class ClienteDeObjetos {
                 tipoU = "Secretaria";
                 break;
             case 2:
-                tipoU = "Entrenador";
+                tipoU = "Profesional";
                 break;
             default:
                 System.out.println("Tipo no valido, ingrese una opcion del 1 al 2");

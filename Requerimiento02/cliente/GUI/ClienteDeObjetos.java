@@ -1,6 +1,8 @@
 package cliente.utilidades;
 
 import java.rmi.RemoteException;
+import java.time.Period;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -89,19 +91,25 @@ public class ClienteDeObjetos {
             usuario = objRemoto.consultarUsuario(id);
             if (Usuario != null) {
                 System.out.println("==Plan del cliente==");
-                for(int i=0; i<usuario.planEntrenamiento.length(); i++){
+                for (int i = 0; i < usuario.planEntrenamiento.length(); i++) {
                     System.out.println("Fecha inicio: " + usuario.planEntrenamiento.get(i).getFechaInicio);
-                    for(int j=0; j<usuario.planEntrenamiento.get(i).Programa.length();j++){
+                    for (int j = 0; j < usuario.planEntrenamiento.get(i).Programa.length(); j++) {
                         System.out.println("Dia: " + usuario.planEntrenamiento.get(i).Programa.get(j).getDia());
-                        for(int k=0; k<usuario.planEntrenamiento.get(i).Programa.get(k).ejercicio.length(); k++){
-                            System.out.println("==Ejercicio "+k+"==");
-                            System.out.println("Nombre ejercicio: "+ usuario.planEntrenamiento.get(i).Programa.get(k).ejercicio.get(k).getNombreEjercicio());
-                            System.out.println("Repeticiones: "+ usuario.planEntrenamiento.get(i).Programa.get(k).ejercicio.get(k).getRepericiones());
-                            System.out.println("Peso: "+ usuario.planEntrenamiento.get(i).Programa.get(k).ejercicio.get(k).getPeso());
+                        for (int k = 0; k < usuario.planEntrenamiento.get(i).Programa.get(k).ejercicio.length(); k++) {
+                            System.out.println("==Ejercicio " + k + "==");
+                            System.out.println(
+                                    "Nombre ejercicio: " + usuario.planEntrenamiento.get(i).Programa.get(k).ejercicio
+                                            .get(k).getNombreEjercicio());
+                            System.out.println(
+                                    "Repeticiones: " + usuario.planEntrenamiento.get(i).Programa.get(k).ejercicio.get(k)
+                                            .getRepericiones());
+                            System.out.println("Peso: "
+                                    + usuario.planEntrenamiento.get(i).Programa.get(k).ejercicio.get(k).getPeso());
                         }
                         System.out.println("Faltas: " + usuario.planEntrenamiento.get(i).Programa.get(j).getFaltas());
-                        for(int k=0; k<usuario.planEntrenamiento.get(i).Programa.get(k).observaciones.length();k++){
-                            System.out.println("==Observacion "+k+"==");
+                        for (int k = 0; k < usuario.planEntrenamiento.get(i).Programa.get(k).observaciones
+                                .length(); k++) {
+                            System.out.println("==Observacion " + k + "==");
                             System.out.println(usuario.planEntrenamiento.get(i).Programa.get(k).observaciones.get(k));
                         }
                     }
@@ -515,25 +523,93 @@ public class ClienteDeObjetos {
     }
 
     private static void OpcionPro2() {
-        System.out.println("==Registrar Asistencia==");
-        System.out.println("Ingrese la identificacion del paciente: ");
-        int id = UtilidadesConsola.leerEntero();
-        UsuarioDTO usuario = new UsuarioDTO();
-        usuario = objRemoto.consultarUsuario(id);
-        if (usuario == null) {
-            System.out.println("Usuario con id: " + id + " no existe");
-            OpcionPro1();
+        try {
+            System.out.println("==Registrar Asistencia==");
+            System.out.println("Ingrese la identificacion del paciente: ");
+            int id = UtilidadesConsola.leerEntero();
+            UsuarioDTO usuario = new UsuarioDTO();
+            usuario = objRemoto.consultarUsuario(id);
+            if (usuario == null) {
+                System.out.println("Usuario con id: " + id + " no existe");
+                OpcionPro1();
+            }
+            System.out.println("Ingrese la fecha de la asistencia:");
+            String fechaAsistencia = UtilidadesConsola.leerCadena();
+            System.out.println("Ingrese las observaciones:");
+            String observaciones = UtilidadesConsola.leerCadena();
+            AsistenciaDTO objAsistencia = new AsistenciaDTO(id, fechaAsistencia, observaciones);
+            boolean valor = objRemoto.registrarAsistencia(objAsistencia);
+            if (valor) {
+                System.out.println("**Asistencia Registrada Exitosamente**");
+            } else {
+                System.out.println("**Asistencia no registrada**");
+            }
+
+        } catch (Exception e) {
+            System.out.println("La operación no se pudo completar, intente nuevamente...");
+            System.out.println("Excepcion generada: " + e.getMessage());
         }
-        System.out.println("Ingrese la fecha de la asistencia:");
-        String fechaAsistencia = UtilidadesConsola.leerCadena();
-        System.out.println("Ingrese las observaciones:");
-        String observaciones = UtilidadesConsola.leerCadena();
-        AsistenciaDTO objAsistencia = new AsistenciaDTO(id, fechaAsistencia, observaciones);
-        boolean valor = objRemoto.registrarAsistencia(objAsistencia);
-        if (valor) {
-            System.out.println("**Asistencia Registrada Exitosamente**");
-        } else {
-            System.out.println("**Asistencia no registrada**");
+    }
+
+    private static void OpcionPro3() {
+        try {
+            System.out.println("==Crear plann==");
+            System.out.println("Ingrese la fecha de inicio: ");
+            String fechaInicio = UtilidadesConsola.leerCadena();
+            int opc = 0;
+            do {
+                System.out.println("1. Registrar Programa");
+                System.out.println("2. Terminar");
+                opc = UtilidadesConsola.leerEntero();
+                ArrayList<ProgramaDTO> programas = new ArrayList<>();
+                switch (opc) {
+                    case 1:
+                        System.out.println("Ingrese el dia:");
+                        String dia = UtilidadesConsola.leerCadena();
+                        System.out.println("Ingrese el numero de ejercicios:");
+                        int numEjercicios = UtilidadesConsola.leerEntero();
+                        ArrayList<Ejercicio> ejercicios = new ArrayList<>();
+                        for (int i = 0; i < numEjercicios; i++) {
+                            System.out.println("Ingrese el nombre del ejercicio:");
+                            String nombreEjercicio = UtilidadesConsola.leerCadena();
+                            System.out.println("Ingrese la cantidad de repeticiones: ");
+                            int repeticiones = UtilidadesConsola.leerEntero();
+                            System.out.println("Ingrese el peso: ");
+                            int peso = UtilidadesConsola.leerEntero();
+                            Ejercicio objEjercicio = new Ejercicio(nombreEjercicio, repeticiones, peso);
+                            ejercicios.add(objEjercicio);
+                        }
+                        // Falta esto en el constructor, no se si se arreglen por otro lado
+                        System.out.println("Ingrese las faltas: ");
+                        int faltas = UtilidadesConsola.leerEntero();
+                        ArrayList<String> observaciones = new ArrayList<>();
+                        for (int i = 0; i < numEjercicios; i++) {
+                            System.out.println("Ingrese la observacion correspondiente al ejercicio " + i + ": ");
+                            String observacion = UtilidadesConsola.leerCadena();
+                            observaciones.add(observacion);
+                        }
+                        break;
+                    case 2:
+                        System.out.println("Plan terminado");
+                        break;
+                    default:
+                        System.out.println("Opcion no valida");
+                        break;
+                }
+
+            } while (opc != 2);
+            // Constructor corto ProgramaDTO objPrograma = new ProgramaDTO(dia,ejercicios);
+            ProgramaDTO objPrograma = new ProgramaDTO(dia,ejercicios,faltas,observaciones);
+            boolean valor = objRemoto.registrarPrograma(objPrograma);
+            if (valor) {
+                System.out.println("**Programa Registrada Exitosamente**");
+            } else {
+                System.out.println("**Programa no registrada**");
+            }
+
+        } catch (Exception e) {
+            System.out.println("La operación no se pudo completar, intente nuevamente...");
+            System.out.println("Excepcion generada: " + e.getMessage());
         }
     }
 }

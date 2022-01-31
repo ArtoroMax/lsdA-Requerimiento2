@@ -27,4 +27,6 @@ public interface GestionUsuariosInt extends Remote {
     public boolean registrarValoracion(ValoracionDTO objValoracion, int id) throws RemoteException;
 
     public UsuarioDTO consultarUsuario(int id) throws RemoteException;
+
+    public UsuarioDTO editarUsuario(UsuarioDTO objUsuario) throws RemoteException;
 }

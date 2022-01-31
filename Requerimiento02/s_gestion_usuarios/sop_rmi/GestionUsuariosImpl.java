@@ -24,8 +24,8 @@ public class GestionUsuariosImpl extends UnicastRemoteObject implements GestionU
     private ArrayList<UsuarioDTO> usuarios;
     private Vector<AdminCllbckInt> callbacks;
     private SeguimientoUsuariosInt objRemotoSeguimiento;
-    private static String URL_LOCATION_FILE = "./src/s_gestion_usuarios/usuarios.dat";
-
+    private static String URL_LOCATION_FILE = "Requerimiento02/s_gestion_usuarios/historialUsuarios.txt";
+    
     public GestionUsuariosImpl() throws RemoteException {
         super();
         personal = new ArrayList<PersonalDTO>();
@@ -89,9 +89,10 @@ public class GestionUsuariosImpl extends UnicastRemoteObject implements GestionU
     public boolean registrarPersonal(PersonalDTO objPersonal) throws RemoteException {
         System.out.println("Registrar Personañ ---- ENTRANDO");
         boolean bandera = false;
-
+        personal = deserializar();
         if (personal.size() < 10) {
             bandera = personal.add(objPersonal);
+            serializar(personal);
             System.out.println("Personal registrado exitosamente");
         }
 
@@ -103,6 +104,7 @@ public class GestionUsuariosImpl extends UnicastRemoteObject implements GestionU
         PersonalDTO resultado = null;
         System.out.println("*** Desde consultarPersonal()...");
         System.out.println("*** Consultar Personal con id: " + id);
+        personal = deserializar();
         int bandera = buscarPersonal(id);
         if (bandera != -1) {
             resultado = personal.get(bandera);
@@ -131,9 +133,10 @@ public class GestionUsuariosImpl extends UnicastRemoteObject implements GestionU
     public boolean registrarUsuario(UsuarioDTO objUsuario) throws RemoteException {
         System.out.println("Registrar Usuario ---- ENTRANDO");
         boolean bandera = false;
-
+        usuarios = deserializar2();
         if (personal.size() < 10) {
             bandera = usuarios.add(objUsuario);
+            serializar2(usuarios);
             System.out.println("Usuario registrado exitosamente");
             System.out.println("Registra usuario ---- SALIENDo");
         }
@@ -145,6 +148,7 @@ public class GestionUsuariosImpl extends UnicastRemoteObject implements GestionU
         UsuarioDTO resultado = null;
         System.out.println("*** Desde consultarUsuario()...");
         System.out.println("*** Consultar usuario con id: " + id);
+        usuarios = deserializar2();
         int bandera = buscarPersonal(id);
         if (bandera != -1) {
             resultado = usuarios.get(bandera);
@@ -169,6 +173,24 @@ public class GestionUsuariosImpl extends UnicastRemoteObject implements GestionU
         return personal;
     }
 
+    
+    @Override
+    public UsuarioDTO editarUsuario(UsuarioDTO usuario) throws RemoteException {
+        System.out.println("Entrando a editar usuario");
+        ArrayList<UsuarioDTO> arrayPersonalRegistrados = deserializar2();
+        int size = arrayPersonalRegistrados.size();
+        arrayPersonalRegistrados.removeIf(user -> user.equals(usuario));
+
+        if (arrayPersonalRegistrados.size() == size) {
+            System.out.println("Saliendo de editar usuario");
+            return null;
+        }
+        arrayPersonalRegistrados.add(usuario);
+        serializar2(arrayPersonalRegistrados);
+        System.out.println("Saliendo de editar usuario");
+        return usuario;
+    }
+
     private void serializar(ArrayList<PersonalDTO> arrayUsuariosRegistrados) {
 
         try {
@@ -188,6 +210,37 @@ public class GestionUsuariosImpl extends UnicastRemoteObject implements GestionU
             FileInputStream fis = new FileInputStream(URL_LOCATION_FILE);
             ObjectInputStream ois = new ObjectInputStream(fis);
             biblioteca = (ArrayList<PersonalDTO>) ois.readObject();
+            ois.close();
+            fis.close();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+
+        } catch (ClassNotFoundException c) {
+            System.out.println("Class not found");
+            c.printStackTrace();
+        }
+        // Devuelvo la biblioteca
+        return biblioteca;
+    }
+
+    private void serializar2(ArrayList<UsuarioDTO> arrayUsuariosRegistrados) {
+        try {
+            FileOutputStream fos = new FileOutputStream(URL_LOCATION_FILE);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(arrayUsuariosRegistrados);
+            oos.close();
+            fos.close();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+    }
+
+    private ArrayList<UsuarioDTO> deserializar2() {
+        ArrayList<UsuarioDTO> biblioteca = new ArrayList<UsuarioDTO>();
+        try {
+            FileInputStream fis = new FileInputStream(URL_LOCATION_FILE);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            biblioteca = (ArrayList<UsuarioDTO>) ois.readObject();
             ois.close();
             fis.close();
         } catch (IOException ioe) {

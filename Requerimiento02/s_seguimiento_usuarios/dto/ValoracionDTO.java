@@ -1,8 +1,9 @@
 package s_seguimiento_usuarios.dto;
 
+import java.io.Serializable;
 import java.sql.Date;
 
-public class ValoracionDTO {
+public class ValoracionDTO implements Serializable{
     private Date fechaValoracion;
     private double frecCardiacaRep;
     private double frecCardiacaAct;

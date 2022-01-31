@@ -1,6 +1,12 @@
 package s_gestion_usuarios.sop_rmi;
 
 import cliente.sop_rmi.AdminCllbckInt;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -8,12 +14,16 @@ import java.util.Vector;
 import s_gestion_usuarios.dto.CredencialDTO;
 import s_gestion_usuarios.dto.PersonalDTO;
 import s_gestion_usuarios.dto.UsuarioDTO;
+import s_gestion_usuarios.utilidades.UtilidadesRegistroC;
+import s_seguimiento_usuarios.sop_rmi.SeguimientoUsuariosInt;
 
 public class GestionUsuariosImpl extends UnicastRemoteObject implements GestionUsuariosInt {
 
     private ArrayList<PersonalDTO> personal;
     private ArrayList<UsuarioDTO> usuarios;
     private Vector<AdminCllbckInt> callbacks;
+    private SeguimientoUsuariosInt objRemotoSeguimiento;
+    private static String URL_LOCATION_FILE = "./src/s_gestion_usuarios/usuarios.dat";
 
     public GestionUsuariosImpl() throws RemoteException {
         super();
@@ -55,11 +65,13 @@ public class GestionUsuariosImpl extends UnicastRemoteObject implements GestionU
     }
 
     public void consultarReferenciaRemota(String direccionIpRMIRegistry, int numPuertoRMIRegistry) {
-        System.out.println(" ");
-        System.out.println("Desde consultarReferenciaRemota()...");
-        // this.objReferenciaRemota = (GestionNotificacionesInt)
-        // UtilidadesRegistroC.obtenerObjRemoto(direccionIpRMIRegistry,
-        // numPuertoRMIRegistry, "ObjetoRemotoNotificacion");
+        System.out.println("Entrando a consultar referencia remota");
+        System.out.println("Desde consultar referencia remota...");
+        this.objRemotoSeguimiento = (SeguimientoUsuariosInt) UtilidadesRegistroC.obtenerObjRemoto(
+                direccionIpRMIRegistry,
+                numPuertoRMIRegistry, "ObjetoRemotoNotificaciones");
+
+        System.out.println("Saliendo de consultar referencia remota");
     }
 
     @Override
@@ -127,5 +139,54 @@ public class GestionUsuariosImpl extends UnicastRemoteObject implements GestionU
             resultado = usuarios.get(bandera);
         }
         return resultado;
+    }
+
+    @Override
+    public PersonalDTO editarPersonal(PersonalDTO personal) throws RemoteException {
+        System.out.println("Entrando a editar usuario");
+        ArrayList<PersonalDTO> arrayPersonalRegistrados = deserializar();
+        int size = arrayPersonalRegistrados.size();
+        arrayPersonalRegistrados.removeIf(user -> user.equals(personal));
+
+        if (arrayPersonalRegistrados.size() == size) {
+            System.out.println("Saliendo de editar usuario");
+            return null;
+        }
+        arrayPersonalRegistrados.add(personal);
+        serializar(arrayPersonalRegistrados);
+        System.out.println("Saliendo de editar usuario");
+        return personal;
+    }
+
+    private void serializar(ArrayList<PersonalDTO> arrayUsuariosRegistrados) {
+
+        try {
+            FileOutputStream fos = new FileOutputStream(URL_LOCATION_FILE);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(arrayUsuariosRegistrados);
+            oos.close();
+            fos.close();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+    }
+
+    private ArrayList<PersonalDTO> deserializar() {
+        ArrayList<PersonalDTO> biblioteca = new ArrayList<PersonalDTO>();
+        try {
+            FileInputStream fis = new FileInputStream(URL_LOCATION_FILE);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            biblioteca = (ArrayList<PersonalDTO>) ois.readObject();
+            ois.close();
+            fis.close();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+
+        } catch (ClassNotFoundException c) {
+            System.out.println("Class not found");
+            c.printStackTrace();
+        }
+        // Devuelvo la biblioteca
+        return biblioteca;
     }
 }

@@ -15,6 +15,8 @@ public interface GestionUsuariosInt extends Remote {
 
     public PersonalDTO consultarPersonal(int id) throws RemoteException;
 
+    public PersonalDTO editarPersonal(PersonalDTO objPersonal) throws RemoteException;
+
     public void registrarCallback(AdminCllbckInt objAdmin) throws RemoteException;
 
     public PersonalDTO abrirSesion(CredencialDTO objCredencial) throws RemoteException;

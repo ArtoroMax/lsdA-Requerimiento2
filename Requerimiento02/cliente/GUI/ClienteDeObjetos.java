@@ -523,7 +523,7 @@ public class ClienteDeObjetos {
         System.out.println("Ingrese la identificacion del paciente: ");
         int id = UtilidadesConsola.leerEntero();
         UsuarioDTO usuario = new UsuarioDTO();
-        usuario = objRemoto.consultarUsuario(id);
+        //usuario = objRemoto.consultarUsuario(id);
         if (usuario == null) {
             System.out.println("Usuario con id: " + id + " no existe");
             OpcionPro1();
@@ -532,12 +532,12 @@ public class ClienteDeObjetos {
         String fechaAsistencia = UtilidadesConsola.leerCadena();
         System.out.println("Ingrese las observaciones:");
         String observaciones = UtilidadesConsola.leerCadena();
-        AsistenciaDTO objAsistencia = new AsistenciaDTO(id, fechaAsistencia, observaciones);
-        boolean valor = objRemoto.registrarAsistencia(objAsistencia);
-        if (valor) {
-            System.out.println("**Asistencia Registrada Exitosamente**");
-        } else {
-            System.out.println("**Asistencia no registrada**");
-        }
+        //AsistenciaDTO objAsistencia = new AsistenciaDTO(id, fechaAsistencia, observaciones);
+        //boolean valor = objRemoto.registrarAsistencia(objAsistencia);
+        //if (valor) {
+          //  System.out.println("**Asistencia Registrada Exitosamente**");
+        //} else {
+          //  System.out.println("**Asistencia no registrada**");
+        //}
     }
 }

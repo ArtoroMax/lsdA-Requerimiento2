@@ -7,6 +7,7 @@ public class ProgramaDTO implements Serializable{
     private String dia;
     private ArrayList<Ejercicio> ejercicio;
     private int faltas;
+    private ArrayList<String> fechaAsistencias;
     private ArrayList<String> observaciones;
 
     public ProgramaDTO(String dia, ArrayList<Ejercicio> ejercicio) {
@@ -36,6 +37,14 @@ public class ProgramaDTO implements Serializable{
 
     public void setFaltas(int faltas) {
         this.faltas = faltas;
+    }
+
+    public ArrayList<String> getFechaAsistencia() {
+        return fechaAsistencias;
+    }
+
+    public void setFechaAsistencias(ArrayList<String> fechaAsistencias) {
+        this.fechaAsistencias = fechaAsistencias;
     }
 
     public ArrayList<String> getObservaciones() {

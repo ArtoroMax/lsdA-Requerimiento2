@@ -5,7 +5,6 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import s_gestion_usuarios.dto.PersonalDTO;
 import s_gestion_usuarios.dto.UsuarioDTO;
-import s_gestion_usuarios.dto.ValoracionDTO;
 import s_gestion_usuarios.dto.CredencialDTO;
 import cliente.sop_rmi.AdminCllbckInt;
 

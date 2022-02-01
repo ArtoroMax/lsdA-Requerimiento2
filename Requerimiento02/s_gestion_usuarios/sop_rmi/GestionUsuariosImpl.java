@@ -23,7 +23,7 @@ public class GestionUsuariosImpl extends UnicastRemoteObject implements GestionU
     private ArrayList<UsuarioDTO> usuarios;
     private Vector<AdminCllbckInt> callbacks;
     private SeguimientoUsuariosInt objRemotoSeguimiento;
-    private static String URL_LOCATION_FILE = "Requerimiento02/s_gestion_usuarios/historialUsuarios.txt";
+    private static String URL_LOCATION_FILE = "Requerimiento02/s_gestion_usuarios/historialUsuarios.dat";
     
     public GestionUsuariosImpl() throws RemoteException {
         super();
@@ -31,12 +31,14 @@ public class GestionUsuariosImpl extends UnicastRemoteObject implements GestionU
         callbacks = new Vector<>();
 
         registrarPersonal(new PersonalDTO("CC", 1007226136, "Edwin Garces", "Administrador", "admin", "admin"));
+        registrarPersonal(new PersonalDTO("CC", 11, "Edwin Garceso", "Profesional", "profesional1", "profesional1"));
+        registrarPersonal(new PersonalDTO("CC", 10, "Edwin Garceso", "Secretaria", "secretaria1", "secretaria1"));
     }
 
     @Override
     public PersonalDTO abrirSesion(CredencialDTO objCredencial) throws RemoteException {
         System.out.println("Iniciar Sesión ---- ENTRANDO");
-        PersonalDTO personalBusqueda = null;;
+        PersonalDTO personalBusqueda = null;
         for (int i = 0; i < personal.size(); i++) {
             personalBusqueda = personal.get(i);
 
@@ -137,7 +139,7 @@ public class GestionUsuariosImpl extends UnicastRemoteObject implements GestionU
             bandera = usuarios.add(objUsuario);
             serializar2(usuarios);
             System.out.println("Usuario registrado exitosamente");
-            System.out.println("Registra usuario ---- SALIENDo");
+            System.out.println("Registra usuario ---- SALIENDO");
         }
         return bandera;
     }

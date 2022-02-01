@@ -118,8 +118,8 @@ public class UsuarioDTO implements Serializable{
 		return planEntrenamiento;
 	}
 
-	public void setPlanEntrenamientoDTO(ArrayList<PlanEntrenamientoDTO> planEntrenamiento) {
-		this.planEntrenamiento = planEntrenamiento;
+	public void setPlanEntrenamientoDTO(PlanEntrenamientoDTO planEntrenamiento) {
+		this.planEntrenamiento.add(planEntrenamiento);
 	}
 
 }

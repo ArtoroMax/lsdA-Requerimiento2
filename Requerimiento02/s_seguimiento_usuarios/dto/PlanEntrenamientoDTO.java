@@ -1,23 +1,22 @@
 package s_seguimiento_usuarios.dto;
 
 import java.io.Serializable;
-import java.sql.Date;
 import java.util.ArrayList;
 
 public class PlanEntrenamientoDTO implements Serializable{
-    private Date fechaInicio;
+    private String fechaInicio;
     private ArrayList<ProgramaDTO>  Programa;
     
-    public PlanEntrenamientoDTO(Date fechaInicio, ArrayList<ProgramaDTO> Programa) {
+    public PlanEntrenamientoDTO(String fechaInicio, ProgramaDTO Programa) {
         this.fechaInicio = fechaInicio;
-        this.Programa = Programa;
+        this.Programa.add(Programa);
     }
 
-    public Date getFechaInicio() {
+    public String getFechaInicio() {
         return fechaInicio;
     }
 
-    public void setFechaInicio(Date fechaInicio) {
+    public void setFechaInicio(String fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
 
@@ -25,7 +24,7 @@ public class PlanEntrenamientoDTO implements Serializable{
         return Programa;
     }
 
-    public void setPrograma(ArrayList<ProgramaDTO> Programa) {
-        this.Programa = Programa;
+    public void setPrograma(ProgramaDTO Programa) {
+        this.Programa.add(Programa);
     }
 }

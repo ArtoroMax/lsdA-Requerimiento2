@@ -1,6 +1,7 @@
 package cliente.GUI;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 import cliente.utilidades.UtilidadesConsola;
 import cliente.utilidades.UtilidadesRegistroC;
@@ -9,6 +10,8 @@ import s_gestion_usuarios.dto.PersonalDTO;
 import s_gestion_usuarios.dto.UsuarioDTO;
 import s_gestion_usuarios.dto.ValoracionDTO;
 import s_gestion_usuarios.sop_rmi.GestionUsuariosInt;
+import s_seguimiento_usuarios.dto.Ejercicio;
+import s_seguimiento_usuarios.dto.ProgramaDTO;
 import s_seguimiento_usuarios.sop_rmi.SeguimientoUsuariosInt;
 
 /**
@@ -32,6 +35,8 @@ public class ClienteDeObjetos {
         // numPuertoRMIRegistry = UtilidadesConsola.leerEntero();
         objRemoto = (GestionUsuariosInt) UtilidadesRegistroC.obtenerObjRemoto(direccionIpRMIRegistry,
                 numPuertoRMIRegistry, "ObjetoRemotoPersonal");
+        objRemotoSeguimiento = (SeguimientoUsuariosInt) UtilidadesRegistroC.obtenerObjRemoto(direccionIpRMIRegistry,
+                numPuertoRMIRegistry, "ObjetoRemotoSeguimiento");
         MenuPrincipal();
 
     }
@@ -62,7 +67,7 @@ public class ClienteDeObjetos {
                         MenuSecretaria();
                     } else if (Usuario.getOcupacion().equals("Profesional")) {
                         MenuProfesional();
-                    } else{
+                    } else {
                         System.out.println("Credenciales no válidas");
                     }
                     break;
@@ -186,6 +191,7 @@ public class ClienteDeObjetos {
         do {
             System.out.println("==Menu==");
             System.out.println("1. Valorar Paf");
+            System.out.println("2. Registrar plan de entrenamiento");
             System.out.println("2. Registrar asistencia");
             System.out.println("3. Salir");
 
@@ -196,16 +202,19 @@ public class ClienteDeObjetos {
                     OpcionPro1();
                     break;
                 case 2:
-                    OpcionPro2();
+                    OpcionPro3();
                     break;
                 case 3:
+                    OpcionPro2();
+                    break;
+                case 4:
                     System.out.println("Salir...");
                     break;
                 default:
                     System.out.println("Opción incorrecta");
             }
 
-        } while (opcion != 3);
+        } while (opcion != 4);
     }
 
     private static String tipoID() {
@@ -284,16 +293,16 @@ public class ClienteDeObjetos {
 
     private static String tipoUsuario() {
         System.out.println("Seleccione tipo de usuario: ");
-        System.out.println("1. Secretaria ");
-        System.out.println("2. Entrenador");
+        System.out.println("1. Docente ");
+        System.out.println("2. Administrativo");
         int tipoUsuario = UtilidadesConsola.leerEntero();
         String tipoU = null;
         switch (tipoUsuario) {
             case 1:
-                tipoU = "Secretaria";
+                tipoU = "Docente";
                 break;
             case 2:
-                tipoU = "Entrenador";
+                tipoU = "Administrativo";
                 break;
             default:
                 System.out.println("Tipo no valido, ingrese una opcion del 1 al 2");
@@ -304,7 +313,7 @@ public class ClienteDeObjetos {
     }
 
     private static boolean validarId(int id) {
-        if (id <= 0 && id >=999999) {
+        if (id <= 0 && id >= 999999) {
             System.out.println("Identificacion no valida");
             return false;
         } else {
@@ -377,7 +386,8 @@ public class ClienteDeObjetos {
             if (valor) {
                 System.out.println("**Personal Registrado Exitosamente**");
             } else {
-                System.out.println("**Personal No Registrado, se alcanzó la cantidad máxim a de usuarios a registrar**");
+                System.out
+                        .println("**Personal No Registrado, se alcanzó la cantidad máxim a de usuarios a registrar**");
             }
         } catch (RemoteException e) {
             System.out.println("La operacion no se pudo completar, intente nuevamente...");
@@ -526,10 +536,14 @@ public class ClienteDeObjetos {
         }
     }
 
-    private static void OpcionPro2() throws RemoteException{
+    private static void OpcionPro2() throws RemoteException {
         System.out.println("==Registrar Asistencia==");
         System.out.println("Ingrese la identificacion del paciente: ");
         int id = UtilidadesConsola.leerEntero();
+        System.out.println("Ingrese numero del plan: ");
+        int plan = UtilidadesConsola.leerEntero();
+        System.out.println("Ingrese numero del programa: ");
+        int programa = UtilidadesConsola.leerEntero();
         UsuarioDTO usuario;
         usuario = objRemoto.consultarUsuario(id);
         if (usuario == null) {
@@ -540,13 +554,69 @@ public class ClienteDeObjetos {
         String fechaAsistencia = UtilidadesConsola.leerCadena();
         System.out.println("Ingrese las observaciones:");
         String observaciones = UtilidadesConsola.leerCadena();
-        // AsistenciaDTO objAsistencia = new AsistenciaDTO(id, fechaAsistencia,
-        // observaciones);
-        // boolean valor = objRemoto.registrarAsistencia(objAsistencia);
-        // if (valor) {
-        // System.out.println("**Asistencia Registrada Exitosamente**");
-        // } else {
-        // System.out.println("**Asistencia no registrada**");
-        // }
+
+        boolean valor = objRemotoSeguimiento.registrarAsistencia(fechaAsistencia, observaciones, id, plan, programa);
+        if (valor) {
+            System.out.println("**Programa Registrada Exitosamente**");
+        } else {
+            System.out.println("**Programa no registrada**");
+        }
+
+    }
+
+    private static void OpcionPro3() {
+        try {
+            System.out.println("==Crear plann==");
+            System.out.println("Ingrese identificacion de usuario: ");
+            int id = UtilidadesConsola.leerEntero();
+            System.out.println("Ingrese la fecha de inicio: ");
+            String fechaInicio = UtilidadesConsola.leerCadena();
+            ArrayList<Ejercicio> ejercicios = new ArrayList<>();
+            String dia = null;
+            int opc = 0;
+            do {
+                System.out.println("1. Registrar Programa");
+                System.out.println("2. Terminar");
+                opc = UtilidadesConsola.leerEntero();
+                switch (opc) {
+                    case 1:
+                        System.out.println("Ingrese el dia:");
+                        dia = UtilidadesConsola.leerCadena();
+                        System.out.println("Ingrese el numero de ejercicios:");
+                        int numEjercicios = UtilidadesConsola.leerEntero();
+
+                        for (int i = 0; i < numEjercicios; i++) {
+                            System.out.println("Ingrese el nombre del ejercicio:");
+                            String nombreEjercicio = UtilidadesConsola.leerCadena();
+                            System.out.println("Ingrese la cantidad de repeticiones: ");
+                            int repeticiones = UtilidadesConsola.leerEntero();
+                            System.out.println("Ingrese el peso: ");
+                            String peso = UtilidadesConsola.leerCadena();
+                            Ejercicio objEjercicio = new Ejercicio(nombreEjercicio, repeticiones, peso);
+                            ejercicios.add(objEjercicio);
+                        }
+                        break;
+                    case 2:
+                        System.out.println("Plan terminado");
+                        break;
+                    default:
+                        System.out.println("Opcion no valida");
+                        break;
+                }
+
+            } while (opc != 2);
+            // Constructor corto ProgramaDTO objPrograma = new ProgramaDTO(dia,ejercicios);
+            ProgramaDTO objPrograma = new ProgramaDTO(dia, ejercicios);
+            boolean valor = objRemotoSeguimiento.registrarEntrenamiento(fechaInicio, objPrograma, id);
+            if (valor) {
+                System.out.println("**Programa Registrada Exitosamente**");
+            } else {
+                System.out.println("**Programa no registrada**");
+            }
+
+        } catch (Exception e) {
+            System.out.println("La operación no se pudo completar, intente nuevamente...");
+            System.out.println("Excepcion generada: " + e.getMessage());
+        }
     }
 }

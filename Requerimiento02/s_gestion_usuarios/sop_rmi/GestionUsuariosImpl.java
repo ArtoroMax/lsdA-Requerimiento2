@@ -24,7 +24,7 @@ public class GestionUsuariosImpl extends UnicastRemoteObject implements GestionU
     private Vector<AdminCllbckInt> callbacks;
     private SeguimientoUsuariosInt objRemotoSeguimiento;
     private static String URL_LOCATION_FILE = "Requerimiento02/s_gestion_usuarios/historialUsuarios.dat";
-    
+
     public GestionUsuariosImpl() throws RemoteException {
         super();
         personal = new ArrayList<PersonalDTO>();
@@ -76,7 +76,8 @@ public class GestionUsuariosImpl extends UnicastRemoteObject implements GestionU
         return aux;
     }
 
-    public void consultarReferenciaRemota(String direccionIpRMIRegistry, int numPuertoRMIRegistry) {
+@Override
+    public SeguimientoUsuariosInt consultarReferenciaRemota(String direccionIpRMIRegistry, int numPuertoRMIRegistry) {
         System.out.println("Entrando a consultar referencia remota");
         System.out.println("Desde consultar referencia remota...");
         objRemotoSeguimiento = (SeguimientoUsuariosInt) UtilidadesRegistroC.obtenerObjRemoto(
@@ -84,6 +85,7 @@ public class GestionUsuariosImpl extends UnicastRemoteObject implements GestionU
                 numPuertoRMIRegistry, "ObjetoRemotoNotificaciones");
 
         System.out.println("Saliendo de consultar referencia remota");
+        return objRemotoSeguimiento;
     }
 
     @Override
@@ -174,7 +176,6 @@ public class GestionUsuariosImpl extends UnicastRemoteObject implements GestionU
         return personal;
     }
 
-    
     @Override
     public UsuarioDTO editarUsuario(UsuarioDTO usuario) throws RemoteException {
         System.out.println("Entrando a editar usuario");

@@ -35,8 +35,7 @@ public class ClienteDeObjetos {
         // numPuertoRMIRegistry = UtilidadesConsola.leerEntero();
         objRemoto = (GestionUsuariosInt) UtilidadesRegistroC.obtenerObjRemoto(direccionIpRMIRegistry,
                 numPuertoRMIRegistry, "ObjetoRemotoPersonal");
-        objRemotoSeguimiento = (SeguimientoUsuariosInt) UtilidadesRegistroC.obtenerObjRemoto(direccionIpRMIRegistry,
-                numPuertoRMIRegistry, "ObjetoRemotoSeguimiento");
+        objRemotoSeguimiento = objRemoto.consultarReferenciaRemota(direccionIpRMIRegistry, numPuertoRMIRegistry);
         MenuPrincipal();
 
     }

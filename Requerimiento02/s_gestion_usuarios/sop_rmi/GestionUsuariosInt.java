@@ -5,6 +5,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import s_gestion_usuarios.dto.PersonalDTO;
 import s_gestion_usuarios.dto.UsuarioDTO;
+import s_seguimiento_usuarios.sop_rmi.SeguimientoUsuariosInt;
 import s_gestion_usuarios.dto.CredencialDTO;
 import cliente.sop_rmi.AdminCllbckInt;
 
@@ -26,4 +27,6 @@ public interface GestionUsuariosInt extends Remote {
     public UsuarioDTO consultarUsuario(int id) throws RemoteException;
 
     public UsuarioDTO editarUsuario(UsuarioDTO objUsuario) throws RemoteException;
+
+    public SeguimientoUsuariosInt consultarReferenciaRemota(String direccionIpRMIRegistry, int numPuertoRMIRegistry);
 }
